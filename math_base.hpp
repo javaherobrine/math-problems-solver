@@ -1,0 +1,4 @@
+class number{
+protected:
+	number(){}
+};
