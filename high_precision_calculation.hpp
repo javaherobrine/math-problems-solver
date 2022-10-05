@@ -22,11 +22,17 @@ int encode[]{
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 };
+constexpr unsigned int MAX=4294967295;
 class bigint_bit:number{
 	deque<unsigned int> value;
 	bool sign;
 	void process(string& abs,const bool& sgn,const unsigned int& base){
 		sgn=sign;
+	}
+	void trim(){
+		while(value.back()==0){
+			value.pop_back();
+		}
 	}
 public:
 	bigint_bit(string& input,const unsigned int& base){
@@ -83,15 +89,59 @@ public:
 			*iter+=minus;
 			minus=temp<<(32-move);
 		}
+		trim();
 	}
 	void operator <<=(const bigint_bit& rhs){
 
 	}
-	void operator +=(const bigint_bit& rhs){
-
+	void operator +=(bigint_bit& rhs){
+		if(sign^rhs.sign){
+			rhs.sign=!rhs.sign;
+			*this-=rhs;
+			rhs.sign=!rhs.sign;
+			return;
+		}
+		auto iter=value.begin();
+		auto iter0=rhs.value.begin();
+		unsigned int temp,p,q;
+		unsigned int advance=0;
+		for(;iter!=value.end()&&iter0!=rhs.value.end();){
+			p=*iter;
+			q=*iter0;
+			temp=p+q+advance;
+			if(temp<p||temp<q){
+				advance=1;
+			}else{
+				advance=0;
+			}
+			*iter=temp;
+			iter++;
+			iter0++;
+		}
+		while(iter0!=rhs.value.end()){
+			q=*iter0;
+			temp=q+advance;
+			if(temp<q){
+				advance=1;
+			}else{
+				advance=0;
+			}
+			value.push_back(temp);
+			iter0++;
+		}
+		if(value.back()==MAX&&advance){
+			value.pop_back();
+			value.push_back(0);
+			value.push_back(1);
+		}
 	}
-	void operator -=(const bigint_bit& rhs){
-
+	void operator -=(bigint_bit& rhs){
+		if(sign^rhs.sign){
+			rhs.sign=!rhs.sign;
+			*this+=rhs;
+			rhs.sign=!rhs.sign;
+			return;
+		}
 	}
 	void operator ^=(const bigint_bit& rhs){
 		auto iter=value.begin();
