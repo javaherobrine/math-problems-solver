@@ -1,3 +1,4 @@
+//author:duyaOmega
 #include<iostream>
 #include<cstdio>
 #include<cmath>
