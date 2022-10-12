@@ -34,6 +34,12 @@ class bigint_bit:number{
 			value.pop_back();
 		}
 	}
+	void swap_abs(bigint_bit& b2){
+		auto a=move(value);
+		auto b=move(b2.value);
+		value=move(b);
+		b2.value=move(a);
+	}
 public:
 	bigint_bit(string& input,const unsigned int& base){
 		if(input[0]=='+'){
@@ -51,9 +57,6 @@ public:
 	}
 	void operator <<=(const unsigned int& rhs){
 		int put=rhs/32;
-		for(int i=0;i<put;i++){
-			value.push_front(0);
-		}
 		int move=rhs%32;
 		int add{0};
 		int temp{};
@@ -62,6 +65,9 @@ public:
 			*iter<<=move;
 			*iter+=add;
 			add=temp>>(32-move);
+		}
+		for(int i=0;i<put;i++){
+			value.push_front(0);
 		}
 		if(add>0){
 			value.push_back(add);
@@ -142,6 +148,16 @@ public:
 			rhs.sign=!rhs.sign;
 			return;
 		}
+		auto iter=value.begin();
+		auto iter0=rhs.value.begin();
+		unsigned int p,q,temp,advance{0};
+		for(;iter!=value.end()&&iter0!=rhs.value.end();){
+			p=*iter;
+			q=*iter0;
+			if(p<q){
+				temp=MAX-q+p;
+			}
+		}
 	}
 	void operator ^=(const bigint_bit& rhs){
 		auto iter=value.begin();
@@ -167,6 +183,32 @@ public:
 			for(;iter!=value.end();iter++){
 				value.erase(iter);
 				iter--;
+			}
+		}
+	}
+	static bool compare_abs(const bigint_bit& lhs,const bigint_bit& rhs){
+
+		return 0;
+	}
+	bool operator <(const bigint_bit& rhs) const{
+		if(value.size()==0){
+			if(rhs.value.size()==0){
+				return false;
+			}else{
+				return !(rhs.sign);
+			}
+		}
+		if(sign){
+			if(rhs.sign){
+
+			}else{
+				return false;
+			}
+		}else{
+			if(rhs.sign){
+				return true;
+			}else{
+
 			}
 		}
 	}
