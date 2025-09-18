@@ -10,8 +10,14 @@
 namespace jaro{
 	template<typename NumType>
 	struct Monomial{
-		Monomial(NumType input){
+		Monomial(const NumType& input){
 			coefficient=input;
+		}
+		Monomial(const NumType& input, const std::vector<std::pair<std::string,NumType>> variables){
+			coefficient=input;
+			for(auto&& [p,q]:variables){
+				content[p]+=q;
+			}
 		}
 		void operator *= (const Monomial<NumType>& rhs) {
 			coefficient*=rhs.coefficient;
