@@ -73,7 +73,11 @@ namespace jaro{
 	std::ostream& operator << (std::ostream& lhs, const Monomial<NumType>& rhs){
 		if(rhs.coefficient==0){
 			return lhs<<0;
-		}else if(rhs.coefficient==1){}
+		}else if(rhs.coefficient==1){
+			if(rhs.content.empty()){
+				return lhs<<1;
+			}
+		}
 		else if(rhs.coefficient==-1){
 			lhs<<'-';
 		}else{
@@ -90,6 +94,10 @@ namespace jaro{
 	}
 	template<typename NumType>
 	struct Polynomial{
+		Polynomial(){}
+		Polynomial(std::vector<Monomial<NumType>> rhs){
+			content=std::move(rhs);
+		}
 		std::vector<Monomial<NumType>> content;
 		void operator +=(const Polynomial& rhs){
 			for(auto&& i:rhs.content){
@@ -99,10 +107,18 @@ namespace jaro{
 		}
 	};
 	template<typename NumType>
+	Polynomial<NumType> operator -(const Polynomial<NumType>& rhs){
+		Polynomial<NumType> result{rhs};
+		for(auto&& i:result.content){
+			i.coefficient*=-1;
+		}
+		return result;
+	}
+	template<typename NumType>
 	Polynomial<NumType> operator * (const Polynomial<NumType>& lhs, const Polynomial<NumType>& rhs){
 		std::vector<Monomial<NumType>> vec;
-		for(std::size_t i=0;i<lhs.content;++i){
-			for(std::size_t j=0;j<rhs.content;++j){
+		for(std::size_t i=0;i<lhs.content.size();++i){
+			for(std::size_t j=0;j<rhs.content.size();++j){
 				vec.push_back(lhs.content[i]*rhs.content[j]);
 			}
 		}
@@ -110,11 +126,12 @@ namespace jaro{
 		monomial_merge(vec);
 		Polynomial<NumType> poly;
 		poly.content=std::move(vec);
+		return poly;
 	}
 	template<typename NumType>
 	std::ostream& operator << (std::ostream& lhs, const Polynomial<NumType>& rhs){
 		if(rhs.content.empty()){
-			return lhs;
+			return lhs<<"0";
 		}
 		lhs<<rhs.content[0];
 		for(std::size_t i=1;i<rhs.content.size();++i){

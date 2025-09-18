@@ -7,10 +7,10 @@ namespace jaro{
 template<typename NumType>
 	struct Matrix{
 		std::vector<std::vector<NumType>> mat;
-		std::vector<NumType> operator [] (const std::size_t& i){
+		std::vector<NumType>& operator [] (const std::size_t& i){
 			return mat[i];
 		}
-		const std::vector<NumType> operator [] (const std::size_t& i) const{
+		const std::vector<NumType>& operator [] (const std::size_t& i) const{
 			return mat[i];
 		}
 	};
@@ -20,7 +20,7 @@ template<typename NumType>
 		p=lhs[0].size();
 		if(p!=rhs.mat.size()){
 			std::cerr<<"Illegal argument";
-			return;
+			return {};
 		}
 		m=lhs.mat.size();
 		n=rhs[0].size();
