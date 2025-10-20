@@ -4,7 +4,7 @@
 #include<vector>
 #include<iostream>
 namespace jaro{
-template<typename NumType>
+	template<typename NumType>
 	struct Matrix{
 		std::vector<std::vector<NumType>> mat;
 		std::vector<NumType>& operator [] (const std::size_t& i){
