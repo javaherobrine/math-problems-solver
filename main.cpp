@@ -1,12 +1,21 @@
-#include"matrix.hpp"
-#include"poly.hpp"
-#include"stat.hpp"
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include"int128.h"
 using namespace jaro;
 using namespace std;
 using ll=long long;
-using Mono=Monomial<ll>;
-using Poly=Polynomial<ll>;
-using Mat=Matrix<Poly>;
+ostream& operator <<(ostream& lhs,int128 rhs){
+	int128 ZERO{0ULL,0ULL};
+	string s;
+	while(jaro::less(ZERO,rhs)){
+		//cerr<<rhs.highbit<<" "<<rhs.lowbit<<endl;
+		s+='0'+modulo(rhs,10);
+		rhs=divide(rhs,10);
+	}
+	reverse(s.begin(),s.end());
+	return lhs<<s;
+}
 int main(){
 //	Mat translation;
 //	translation.mat.resize(4,vector<Poly>(4));
@@ -49,6 +58,5 @@ int main(){
 //	pitch[3][3]=ONE;
 //	cerr<<pitch*yaw*translation;
 //	return 0;
-	pair<double,double> p=congression(vector<pair<double,double>>{{1.608*1.608,0.6296+0.01095},{1.5047*1.5047,0.5503+0.01095},{1.407*1.407,0.4849+0.01095},{1.2913*1.2913,0.4008+0.01095},{1.165*1.165,0.3233+0.01095},{0.9979*0.9979,0.235+0.01095}});
-	cout<<p.first<<" "<<p.second;
+	cout<<multiply_raw(1ULL<<60,1ULL<<9);
 }
