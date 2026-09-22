@@ -4,7 +4,7 @@
 #include<utility>
 #include<cmath>
 template<typename T>
-T avarage(const std::vector<T>& input){
+inline T avarage(const std::vector<T>& input){
 	T sum=0;
 	for(auto&& i:input){
 		sum+=i;
@@ -12,7 +12,7 @@ T avarage(const std::vector<T>& input){
 	return sum/input.size();
 }
 template<typename T>
-T u(const std::vector<T>& input){
+inline T u(const std::vector<T>& input){
 	T avg=avarage(input);
 	T sum=0;
 	for(auto&& i:input){
@@ -23,7 +23,7 @@ T u(const std::vector<T>& input){
 	return std::sqrt(sum/size);
 }
 template<typename T>
-std::pair<T,T> congression(const std::vector<std::pair<T,T>>& input){
+inline std::pair<T,T> congression(const std::vector<std::pair<T,T>>& input){
 	T x=0,y=0;
 	for(auto&& [i,j]:input){
 		x+=i;
@@ -38,5 +38,28 @@ std::pair<T,T> congression(const std::vector<std::pair<T,T>>& input){
 	}
 	T b=n1/n2;
 	return {b,y-b*x};
+}
+template<typename T>
+inline T computeV2(const std::pair<T,T>& equation,const std::vector<std::pair<T,T>>& input){
+	auto&& [k,b]=equation;
+	T result=0;
+	for(auto&& [x,y]:input){
+		T p=y-k*x-b;
+		result+=p*p;
+	}
+	return result;
+}
+template<typename T>
+inline T computeS2(const std::vector<T>& s){
+	T result=0,avg=0;
+	for(auto&& i:s){
+		avg+=i;
+	}
+	avg/=s.size();
+	for(auto&& i:s){
+		T b=i-avg;
+		result+=b*b;
+	}
+	return result/s.size();
 }
 #endif

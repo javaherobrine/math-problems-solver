@@ -15,7 +15,7 @@ namespace jaro{
 		}
 	};
 	template<typename NumType>
-	Matrix<NumType> operator * (const Matrix<NumType>& lhs, const Matrix<NumType>& rhs){
+	inline Matrix<NumType> operator * (const Matrix<NumType>& lhs, const Matrix<NumType>& rhs){
 		std::size_t m,p,n;
 		p=lhs[0].size();
 		if(p!=rhs.mat.size()){
@@ -36,7 +36,7 @@ namespace jaro{
 		return result;
 	}
 	template<typename NumType>
-	std::ostream& operator << (std::ostream& lhs, const Matrix<NumType>& rhs){
+	inline std::ostream& operator << (std::ostream& lhs, const Matrix<NumType>& rhs){
 		for(std::size_t i=0;i<rhs.mat.size();++i){
 			for(std::size_t j=0;j<rhs.mat[i].size();++j){
 				lhs<<"line "<<i<<", "<<"column "<<j<<"= "<<rhs[i][j]<<"\n";
